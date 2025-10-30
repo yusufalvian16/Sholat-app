@@ -97,5 +97,25 @@ if (logoutBtn) {
   });
 }
 
+// Add this function
+function formatDate(dateStr) {
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  return new Date(dateStr).toLocaleDateString("id-ID", options);
+}
+
+// Add this function
+function updateCurrentDate() {
+  const dateEl = document.getElementById("current-date");
+  if (dateEl) {
+    dateEl.textContent = formatDate(new Date());
+  }
+}
+
 checkLogin();
 loadUserData();
+updateCurrentDate();
