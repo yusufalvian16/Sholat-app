@@ -13,10 +13,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="../js/supabaseClient.js"></script>
   </head>
-  <body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <body data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
       <div class="container">
-        <span class="navbar-brand mb-0 h1">📿 Sholat Checker</span>
+        <a style="text-decoration: none; color: inherit;" href="../index.html"> <span class="navbar-brand mb-0 h1">📿 Sholat Checker</span></a>
         <span id="current-date" class="navbar-text me-3"></span>
         <button
           class="navbar-toggler"
@@ -34,7 +34,24 @@
             <li class="nav-item">
               <a class="nav-link active" href="statistics.html">Statistik</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="messages.html">Pesan</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About</a>
+            </li>
           </ul>
+
+          <div class="d-flex align-items-center gap-2 me-3">
+            <span class="navbar-text">Mode:</span>
+            <select id="mode-select" class="form-select form-select-sm" style="width: 140px">
+              <option value="normal">Normal</option>
+              <option value="imun">Imun</option>
+              <option value="mens">Mens</option>
+            </select>
+            <span id="mode-badge" class="badge rounded-pill">Normal</span>
+          </div>
+
           <span id="user-profile" class="navbar-text me-2"></span>
           <button id="logout-btn" class="btn btn-outline-danger btn-sm">
             Logout
@@ -44,9 +61,108 @@
     </nav>
 
     <div class="container py-4">
+      <div class="mb-4">
+        <h4 class="mb-3">Ringkasan Statistik</h4>
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <div class="card text-center h-100 stat-card">
+              <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Total Sholat Terekam</h6>
+                <h3 class="card-title" id="stats-total-prayers">...</h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="card text-center h-100 stat-card">
+              <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Kepatuhan Global</h6>
+                <h3 class="card-title" id="stats-overall-winrate">...</h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="card text-center h-100 stat-card">
+              <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Winrate Saya</h6>
+                <h3 class="card-title" id="stats-user-winrate">...</h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="card text-center h-100 stat-card">
+              <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Pengguna Aktif</h6>
+                <h3 class="card-title" id="stats-active-users">...</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="card text-center h-100">
+              <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Total Imun</h6>
+                <h3 class="card-title" id="stats-total-imun">...</h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card text-center h-100">
+              <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Total Absen True</h6>
+                <h3 class="card-title" id="stats-total-true">...</h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card text-center h-100">
+              <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Total Tidak Absen</h6>
+                <h3 class="card-title" id="stats-total-false">...</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm p-4 mb-4">
+        <h4 class="mb-3">Statistik per User</h4>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead class="table-dark">
+              <tr>
+                <th>Nama</th>
+                <th>Winrate</th>
+                <th>Total Absen True</th>
+                <th>Total Imun/Mens</th>
+                <th>Total Tidak Absen</th>
+                <th>Total Hari</th>
+              </tr>
+            </thead>
+            <tbody id="user-stats-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card shadow-sm p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h4 id="habit-title" class="mb-0">Habit Bulan</h4>
+          <div class="d-flex align-items-center gap-2">
+            <label for="month-picker" class="form-label mb-0">Bulan:</label>
+            <input type="month" id="month-picker" class="form-control" style="width: 180px" />
+          </div>
+        </div>
+        <div class="legend mb-2">
+          <span><span class="dot true"></span>Full (5/5)</span>
+          <span><span class="dot false"></span>Tidak Full</span>
+        </div>
+        <div id="habit-matrix"></div>
+      </div>
+
       <div class="card shadow-sm p-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h4>Riwayat Sholat</h4>
+          <h4>Riwayat Sholat (Tabel)</h4>
           <div class="d-flex gap-2">
             <input type="date" id="start-date" class="form-control" />
             <input type="date" id="end-date" class="form-control" />
@@ -67,7 +183,7 @@
                 <th>Isya</th>
               </tr>
             </thead>
-            <tbody id="stats-table"></tbody>
+            <tbody class="" id="stats-table"></tbody>
           </table>
         </div>
       </div>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tentang - Sholat Checker</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/main.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="../js/supabaseClient.js"></script>
+  </head>
+  <body data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+      <div class="container">
+        <a style="text-decoration: none; color: inherit;" href="../index.html"> <span class="navbar-brand mb-0 h1">📿 Sholat Checker</span></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="statistics.html">Statistik</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="messages.html">Pesan</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="about.html">About</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container py-4">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="card p-4">
+            <h3 class="mb-3">Tentang Aplikasi</h3>
+            <p>
+              Sholat Checker adalah aplikasi yang dirancang untuk membantu Anda membangun dan menjaga konsistensi kebiasaan sholat harian. Lebih dari sekadar pelacak pribadi, aplikasi ini menciptakan lingkungan yang suportif di mana Anda dapat saling memotivasi dengan pengguna lain. Dengan fitur rekap harian dan statistik global, Anda bisa melihat progres bersama, menumbuhkan rasa akuntabilitas, dan mengevaluasi pencapaian ibadah secara transparan
+            </p>
+
+            <h5 class="mt-4">Mode Pencatatan</h5>
+            <ul>
+              <li>
+                <strong>Normal</strong>: Pencatatan standar. Ketika Anda absen, status disimpan sebagai centang (✓).
+              </li>
+              <li>
+                <strong>Imun</strong>: untuk kondisi sedang berda pada perjalanan jauh,atau karena kendala tertentu, Ketika Anda absen, status disimpan sebagai ikon bulat (○).
+              </li>
+              <li>
+                <strong>Mens</strong>: Untuk kondisi anda dimana anda sedang Menstruasi. Ketika Anda absen, status disimpan sebagai ikon perisai (🛡️).
+              </li>
+              <li>
+                <strong>Centang Semua</strong>: Tersedia juga tombol "Centang Semua" pada halaman utama untuk menandai semua sholat hari ini sesuai mode aktif.
+              </li>
+            </ul>
+
+            <h5 class="mt-4">Statistik</h5>
+            <p>
+              Halaman statistik menampilkan ringkasan global, per-user, dan habit bulanan semua pengguna.
+              Warna hijau menandakan hari dengan absen lengkap (5/5), sementara merah menandakan tidak lengkap.
+              Anda dapat memilih bulan yang ingin dilihat melalui pemilih bulan di bagian atas.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
