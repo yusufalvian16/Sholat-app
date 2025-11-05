@@ -1,6 +1,6 @@
 # Sholat Checker
 
-Aplikasi web sederhana untuk mencatat kehadiran sholat harian, melihat rekap, statistik per pengguna, habit bulanan, serta fitur pesan/motivasi 24 jam ala “story”. Dirancang untuk penggunaan ringan (2–4 pengguna) dan berjalan sebagai situs statis (HTML/JS/CSS) dengan backend Supabase.
+Aplikasi web sederhana untuk mencatat kehadiran sholat harian, melihat rekap, statistik per pengguna, habit bulanan, serta fitur pesan/motivasi 24 jam ala “story”. berjalan sebagai situs statis (HTML/JS/CSS) dengan backend Supabase.
 
 ## Fitur Singkat
 - Login/Daftar user lokal (`local_users`) dengan hash password di sisi klien.
@@ -120,36 +120,11 @@ create index if not exists messages_created_at_idx on messages (created_at desc)
 --   add constraint messages_user_fk
 --   foreign key (user_id) references local_users(id) on delete cascade;
 ```
-
-Catatan TTL 24 jam: aplikasi memfilter pesan dengan `created_at >= now() - 24 jam`. Jika ingin hard-delete otomatis, gunakan cron/Edge Function (opsional).
-
-## 3) Cara Menjalankan
-Aplikasi ini situs statis, jadi cukup buka `index.html` di browser. Untuk pengalaman lebih baik, gunakan server lokal (disarankan):
-- VSCode + Live Server extension; atau
-- `npx serve` di folder proyek; atau
-- Fitur “Static Web” lain yang Anda suka.
-
 Langkah umum:
 1. Clone/unduh repo ini.
 2. Edit `js/supabaseClient.js` dengan URL & anon key Supabase Anda.
 3. Jalankan SQL skema di atas pada Supabase.
 4. Buka `index.html` (via Live Server) → Registrasi user → Login.
 
-## 4) Alur Penggunaan Utama
-- Pilih Mode di navbar (Normal/Imun/Mens).
-- Absen tiap waktu sholat; klik ulang untuk batal. Tombol “Centang Semua” mengisi semua status sesuai mode.
-- Statistik → lihat ringkasan global, per-user, dan habit bulanan.
-- Pesan → kirim pesan (maks 280 char). Muncul 24 jam; notifikasi akan terlihat di Home untuk user lain.
-
-## 5) Kustomisasi & Catatan
-- Warna/tema: atur di `styles/main.css`.
-- Habit bulanan mengikuti pemilih bulan di halaman Statistik.
-- Notifikasi Home selalu muncul jika ada pesan <24 jam dari user lain.
-- Jika Anda menambahkan FK, Anda dapat mengubah query agar menggunakan join langsung; kode saat ini melakukan 2 kueri untuk kompatibilitas tanpa FK.
-
-## 6) Troubleshooting
-- 400 Bad Request saat select relasi: tambahkan FK atau jangan pakai join (sudah disesuaikan di kode).
-- Upsert error: kode memakai insert/update terpisah untuk menghindari `on_conflict` REST. Pastikan index unik (user_id,date) dibuat.
-- CORS: jalankan lewat server lokal, bukan file://.
 
 Selamat menggunakan! Jika ada masalah/ide, silakan buat issue atau kirim perbaikan.

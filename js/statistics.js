@@ -401,22 +401,27 @@ async function loadStatistics(startDate, endDate) {
 
     // Tabel
     const tbody = document.getElementById("stats-table");
-    if (!tbody) return;
-    tbody.innerHTML = "";
-    data.forEach((row) => {
-      const tr = document.createElement("tr");
-      const name = row.local_users?.fullname ?? "Unknown";
-      tr.innerHTML = `
-        <td>${formatDate(row.date)}</td>
-        <td>${name}</td>
-        <td>${getStatusIcon(row.subuh)}</td>
-        <td>${getStatusIcon(row.dzuhur)}</td>
-        <td>${getStatusIcon(row.ashar)}</td>
-        <td>${getStatusIcon(row.maghrib)}</td>
-        <td>${getStatusIcon(row.isya)}</td>
-      `;
-      tbody.appendChild(tr);
-    });
+    if (tbody) {
+      tbody.innerHTML = "";
+      data.forEach((row) => {
+        const tr = document.createElement("tr");
+        const name = row.local_users?.fullname ?? "Unknown";
+        tr.innerHTML = `
+          <td>${formatDate(row.date)}</td>
+          <td>${name}</td>
+          <td>${getStatusIcon(row.subuh)}</td>
+          <td>${getStatusIcon(row.dzuhur)}</td>
+          <td>${getStatusIcon(row.ashar)}</td>
+          <td>${getStatusIcon(row.maghrib)}</td>
+          <td>${getStatusIcon(row.isya)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // List (mobile)
+    renderStatsList(data);
+
   } catch (err) {
     console.error("Error:", err);
   }
@@ -492,3 +497,33 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+// Render vertical list for mobile stats
+function renderStatsList(data) {
+  const list = document.getElementById("stats-list");
+  if (!list) return;
+  list.innerHTML = "";
+  if (!data || data.length === 0) {
+    list.innerHTML = `<div class="text-muted">Tidak ada data untuk rentang tanggal ini.</div>`;
+    return;
+  }
+  data.forEach((row) => {
+    const name = row.local_users?.fullname ?? "Unknown";
+    const item = document.createElement("div");
+    item.className = "stats-item mb-2";
+    item.innerHTML = `
+      <div class="d-flex justify-content-between align-items-center stats-item-title">
+        <div>${name}</div>
+        <small class="text-muted">${formatDate(row.date)}</small>
+      </div>
+      <div class="mt-2 d-flex flex-wrap gap-2">
+        <span class="badge">Subuh: ${getStatusIcon(row.subuh) || '—'}</span>
+        <span class="badge">Dzuhur: ${getStatusIcon(row.dzuhur) || '—'}</span>
+        <span class="badge">Ashar: ${getStatusIcon(row.ashar) || '—'}</span>
+        <span class="badge">Maghrib: ${getStatusIcon(row.maghrib) || '—'}</span>
+        <span class="badge">Isya: ${getStatusIcon(row.isya) || '—'}</span>
+      </div>
+    `;
+    list.appendChild(item);
+  });
+}

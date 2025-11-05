@@ -128,9 +128,49 @@ async function ensureMensAutoFill(userId) {
   localStorage.setItem(MENS_LAST_AUTO_KEY, today);
 }
 
+// Pastikan user.id sinkron dengan tabel local_users (hindari FK error)
+async function ensureValidUserId() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user) return null;
+
+  // Cek apakah id ada di local_users
+  const { data: byId } = await supabase
+    .from("local_users")
+    .select("id,username,fullname")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (byId) return user; // valid
+
+  // Coba sinkronisasi berdasarkan username
+  if (user.username) {
+    const { data: byUsername } = await supabase
+      .from("local_users")
+      .select("id,username,fullname")
+      .eq("username", user.username)
+      .maybeSingle();
+    if (byUsername) {
+      const repaired = {
+        id: byUsername.id,
+        username: byUsername.username,
+        fullName: byUsername.fullname || byUsername.username,
+      };
+      localStorage.setItem("user", JSON.stringify(repaired));
+      return repaired;
+    }
+  }
+
+  // Jika tidak ditemukan sama sekali, paksa login ulang
+  localStorage.removeItem("user");
+  window.location.href = "pages/login.html";
+  return null;
+}
+
 // Load attendance and bind buttons (user.id is local_users.id)
 async function loadUserData() {
-  const user = checkLogin();
+  let user = checkLogin();
+  if (!user) return;
+  user = await ensureValidUserId();
   if (!user) return;
 
   // handle mens auto-fill
@@ -179,7 +219,9 @@ async function loadUserData() {
 
   document.querySelectorAll("#prayer-buttons button").forEach((btn) => {
     btn.addEventListener("click", async () => {
-      const user = checkLogin();
+      let user = checkLogin();
+      if (!user) return;
+      user = await ensureValidUserId();
       if (!user) return;
 
       const prayer = btn.getAttribute("data-prayer").toLowerCase();
@@ -264,11 +306,17 @@ async function loadUserData() {
       } else {
         // Insert new row (hanya jika newVal bukan null)
         if (newVal !== null) {
+          // Set semua kolom ke null untuk menghindari default 'false' dari DB
           const insertPayload = {
             user_id: user.id,
             date: todayDate,
-            [col]: newVal,
+            subuh: null,
+            dzuhur: null,
+            ashar: null,
+            maghrib: null,
+            isya: null,
           };
+          insertPayload[col] = newVal;
           
           const { error: insertError } = await supabase
             .from("sholat_attendance")
@@ -298,16 +346,16 @@ async function loadUserData() {
 const checkAllBtn = document.getElementById("check-all-btn");
 if (checkAllBtn) {
   checkAllBtn.addEventListener("click", async () => {
-    const user = checkLogin();
+    let user = checkLogin();
+    if (!user) return;
+    user = await ensureValidUserId();
     if (!user) return;
 
     const todayDate = new Date().toISOString().slice(0, 10);
     const mode = getMode();
 
-    // Tentukan nilai status sesuai mode
     const val = mode === 'imun' ? 'imun' : mode === 'mens' ? 'mens' : 'true';
 
-    // Cek apakah row sudah ada
     const { data: rowData } = await supabase
       .from("sholat_attendance")
       .select("*")
@@ -337,6 +385,7 @@ if (checkAllBtn) {
         .eq("date", todayDate);
       error = updateError;
     } else {
+      // pastikan kolom lain null jika bukan val
       const { error: insertError } = await supabase
         .from("sholat_attendance")
         .insert(payload);

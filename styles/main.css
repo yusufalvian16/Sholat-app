@@ -167,6 +167,33 @@ body[data-bs-theme="dark"] {
   overflow-x: auto;
 }
 
+/* Statistik page tweaks */
+.stats-page .card h4 { font-size: 1.05rem; }
+.stats-page .table, .stats-page .table th, .stats-page .table td { font-size: 0.9rem; }
+.stats-page .stat-card h3 { font-size: 1.25rem; }
+
+/* Tabel vs List toggle */
+@media (max-width: 768px) {
+  .stats-page .stats-table-wrapper { display: none; }
+  .stats-page #stats-list { display: block !important; }
+  .stats-page .d-grid.gap-2 > .form-control { min-width: 100%; }
+  .stats-page .d-grid.gap-2 .btn { width: 100%; }
+  .legend { gap: 12px; }
+}
+
+/* List item for stats */
+.stats-item { border: 1px solid var(--border); border-radius: 8px; padding: 10px; background: #232a39; }
+.stats-item .stats-item-title { font-weight: 600; }
+.stats-item .stats-item-line { display: flex; justify-content: space-between; gap: 8px; font-size: 0.95rem; }
+.stats-item .badge { background: #2e3649; border: 1px solid var(--border); }
+
+/* Habit smaller on stats page */
+.stats-page .habit-cell { width: 12px; height: 12px; }
+@media (max-width: 576px) {
+  .stats-page .habit-cell { width: 9px; height: 9px; }
+  .stats-page .habit-row .habit-name { width: 90px; }
+}
+
 @media (max-width: 576px) {
   .habit-row .habit-name {
     width: 100px;

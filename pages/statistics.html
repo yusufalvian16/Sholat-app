@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="../js/supabaseClient.js"></script>
   </head>
-  <body data-bs-theme="dark">
+  <body data-bs-theme="dark" class="stats-page">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
       <div class="container">
         <a style="text-decoration: none; color: inherit;" href="../index.html"> <span class="navbar-brand mb-0 h1">📿 Sholat Checker</span></a>
@@ -127,30 +127,11 @@
       </div>
 
       <div class="card shadow-sm p-4 mb-4">
-        <h4 class="mb-3">Statistik per User</h4>
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead class="table-dark">
-              <tr>
-                <th>Nama</th>
-                <th>Winrate</th>
-                <th>Total Absen True</th>
-                <th>Total Imun/Mens</th>
-                <th>Total Tidak Absen</th>
-                <th>Total Hari</th>
-              </tr>
-            </thead>
-            <tbody id="user-stats-table"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="card shadow-sm p-4 mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <h4 id="habit-title" class="mb-0">Habit Bulan</h4>
-          <div class="d-flex align-items-center gap-2">
+        <div class="mb-2">
+          <h4 id="habit-title" class="mb-2">Habit Bulan</h4>
+          <div class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2">
             <label for="month-picker" class="form-label mb-0">Bulan:</label>
-            <input type="month" id="month-picker" class="form-control" style="width: 180px" />
+            <input type="month" id="month-picker" class="form-control" />
           </div>
         </div>
         <div class="legend mb-2">
@@ -161,16 +142,16 @@
       </div>
 
       <div class="card shadow-sm p-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h4>Riwayat Sholat (Tabel)</h4>
-          <div class="d-flex gap-2">
+        <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2 mb-4">
+          <h4 class="mb-0">Riwayat Sholat (Tabel)</h4>
+          <div class="d-grid gap-2 d-md-flex align-items-stretch align-items-md-center">
             <input type="date" id="start-date" class="form-control" />
             <input type="date" id="end-date" class="form-control" />
             <button id="filter-btn" class="btn btn-primary">Filter</button>
           </div>
         </div>
 
-        <div class="table-responsive">
+        <div class="table-responsive stats-table-wrapper">
           <table class="table table-striped">
             <thead class="table-dark">
               <tr>
@@ -186,6 +167,8 @@
             <tbody class="" id="stats-table"></tbody>
           </table>
         </div>
+
+        <div id="stats-list" class="d-none"></div>
       </div>
     </div>
 
